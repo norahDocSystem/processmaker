@@ -2002,15 +2002,16 @@ function PMFDerivateCase ($caseId, $delIndex, $bExecuteTriggersBeforeAssignment 
  * @param string(32) | $processId | Process ID | The unique ID of the process.
  * @param string(32) | $userId | User ID | The unique ID of the user.
  * @param array | $variables | Array of variables | An associative array of the variables which will be sent to the case.
+ * @param string(32) | $taskId | The unique ID of the task taha is in the starting group.
  * @return int | $result | Result | Returns 1 if new case was created successfully; otherwise, returns 0 if an error occurred.
  *
  */
-function PMFNewCaseImpersonate ($processId, $userId, $variables)
+function PMFNewCaseImpersonate ($processId, $userId, $variables, $taskId = '')
 {
     G::LoadClass( "wsBase" );
 
     $ws = new wsBase();
-    $result = $ws->newCaseImpersonate( $processId, $userId, $variables );
+    $result = $ws->newCaseImpersonate( $processId, $userId, $variables, $taskId);
 
     if ($result->status_code == 0) {
         return $result->caseId;
@@ -2230,6 +2231,14 @@ function setCaseTrackerCode ($sApplicationUID, $sCode, $sPIN = '')
             $aFields['APP_PIN'] = md5( $sPIN );
         }
         $oCase->updateCase( $sApplicationUID, $aFields );
+        if (isset($_SESSION['APPLICATION'])) {
+            if ($sApplicationUID == $_SESSION['APPLICATION']) {
+                global $oPMScript;
+                if (isset($oPMScript->aFields) && is_array($oPMScript->aFields)) {
+                    $oPMScript->aFields['PIN'] = $aFields['APP_DATA']['PIN'];
+                }
+            }
+        }
         return 1;
     } else {
         return 0;

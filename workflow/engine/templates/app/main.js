@@ -17,7 +17,7 @@ function openCaseNotesWindow(appUid1, modalSw, appTitle, proUid, taskUid)
 {
   Ext.MessageBox.show({
     msg: _('ID_CASE_NOTES_LOADING'),
-    progressText: 'Saving...',
+    progressText: _('ID_SAVING'),
     width:300,
     wait:true,
     waitConfig: {interval:200},
@@ -331,6 +331,9 @@ function sendNote()
 
   Ext.getCmp('caseNoteText').focus();
   Ext.getCmp('caseNoteText').reset();
+  Ext.getCmp('caseNoteText').setDisabled(true);
+  Ext.getCmp('sendBtn').setDisabled(true);
+  Ext.getCmp('addCancelBtn').setDisabled(true);
   statusBarMessage( _('ID_CASES_NOTE_POSTING'), true);
   Ext.Ajax.request({
     url : '../appProxy/postNote' ,
@@ -342,10 +345,16 @@ function sendNote()
     success: function ( result, request ) {
       var data = Ext.util.JSON.decode(result.responseText);
       if(data.success=="success"){
+        Ext.getCmp('caseNoteText').setDisabled(false);
+        Ext.getCmp('sendBtn').setDisabled(false);
+        Ext.getCmp('addCancelBtn').setDisabled(false);
         statusBarMessage( _('ID_CASES_NOTE_POST_SUCCESS'), false,true);
         storeNotes.load();
       }
-      else{
+      else {
+        Ext.getCmp('caseNoteText').setDisabled(false);
+        Ext.getCmp('sendBtn').setDisabled(false);
+        Ext.getCmp('addCancelBtn').setDisabled(false);
         statusBarMessage( _('ID_CASES_NOTE_POST_ERROR'), false,false);
         Ext.MessageBox.alert(_('ID_CASES_NOTE_POST_ERROR'), data.message);
 
@@ -376,7 +385,7 @@ function statusBarMessage( msg, isLoading, success ) {
       });
     } else {
       statusBar.setStatus({
-        text: 'Error: ' + msg,
+        text: _('ID_ERROR') + ': ' + msg,
         iconCls: 'x-status-error',
         clear: true
       });

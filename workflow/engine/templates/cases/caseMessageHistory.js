@@ -136,7 +136,7 @@
           }
         }
         if (!http_request){
-          alert('This browser is not supported.');
+          alert(_('ID_BROWSER_NOT_SUPPORTED'));
           return false;
         }
 
@@ -183,7 +183,7 @@ var ActionTabFrameGlobal = '';
               document.location = document.location;
             }
             else{
-              Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+              Ext.Msg.alert( _('ID_REFRESH_LABEL'), _('ID_REFRESH_MESSAGE'));
             }
 
         }
@@ -326,7 +326,7 @@ var ActionTabFrameGlobal = '';
               {name : 'APP_MSG_FROM'},
               {name : 'APP_MSG_TO'},
               {name : 'APP_MSG_STATUS'},
-	      {name : 'APP_MSG_BODY'}
+              {name : 'APP_MSG_BODY'}
 
             ]
           }
@@ -517,7 +517,7 @@ var ActionTabFrameGlobal = '';
           }
         ],
         bbar: new Ext.PagingToolbar({
-          pageSize: 10,
+          pageSize: 20,
           store: store,
           displayInfo: true,
           displayMsg: _('ID_DISPLAY_PROCESSES'),
@@ -536,7 +536,7 @@ var ActionTabFrameGlobal = '';
         }
       });
 
-    processesGrid.store.load({params: {"function":"languagesList"}});
+    processesGrid.store.load({params: {"actionAjax":"messageHistoryGridList_JXP"}});
 
       processesGrid.store.on(
         'load',
