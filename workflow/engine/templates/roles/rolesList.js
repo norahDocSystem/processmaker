@@ -18,7 +18,7 @@ new Ext.KeyMap(document,
            e.stopEvent();
            document.location = document.location;
          }else{
-           Ext.Msg.alert('Refresh', 'You clicked: CTRL-F5');
+           Ext.Msg.alert('Refresh ', 'You clicked: CTRL-F5 ');
          }
        }
      },
